@@ -7,6 +7,7 @@ import pro.sky.java.cource4.ru.hogwarts.school1.model.Student;
 import pro.sky.java.cource4.ru.hogwarts.school1.repositories.StudentRepository;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 @Service
 public class StudentService {
@@ -37,6 +38,15 @@ public class StudentService {
 
     public void deleteStudent(Long id) {
         studentRepository.deleteById(id);
+    }
+    public int countStudents() {
+        return studentRepository.countStudents();
+    }
+    public double getAverageAge() {
+        return studentRepository.getAverageAge();
+    }
+    public List<Student> findLastFiveStudents() {
+        return studentRepository.findLastFiveStudents();
     }
 
     public Collection<Student> findByAgeBetween(int min, int max) {

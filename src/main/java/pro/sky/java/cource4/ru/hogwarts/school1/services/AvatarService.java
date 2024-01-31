@@ -2,6 +2,8 @@ package pro.sky.java.cource4.ru.hogwarts.school1.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -57,6 +59,9 @@ public class AvatarService {
     }
     public Avatar findAvatar(long studentId) {
         return avatarRepository.findByStudentId(studentId).orElse(new Avatar());
+    }
+    public Page<Avatar> findAll(Pageable pageable) {
+        return avatarRepository.findAll(pageable);
     }
     private byte[] generateImagePreview(Path filePath) throws IOException {
         try (InputStream is = Files.newInputStream(filePath);

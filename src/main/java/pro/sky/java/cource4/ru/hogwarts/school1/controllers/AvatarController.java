@@ -76,6 +76,6 @@ public class AvatarController {
         return ResponseEntity.badRequest().build();}
     @GetMapping("/avatars")
     public Page<Avatar> getAllAvatars(@PageableDefault(size = 10, sort = "id") Pageable pageable) {
-        return avatarRepository.findAll(pageable);
+        return avatarService.findAll(pageable);
     }
 }

@@ -10,10 +10,10 @@ import java.util.List;
 public interface StudentRepository extends JpaRepository<Student, Long> {
     Collection<Student> findByAgeBetween(int min, int max);
     Student findStudentById(long id);
-    @Query("SELECT COUNT(*) FROM Student")
+    @Query(value = "SELECT COUNT(*) FROM Student",nativeQuery = true)
     int countStudents();
-    @Query("SELECT AVG(age) FROM Student")
+    @Query(value = "SELECT AVG(age) FROM Student",nativeQuery = true)
     double getAverageAge();
-    @Query("SELECT * FROM student ORDER BY id DESC LIMIT 5")
+    @Query(value = "SELECT * FROM student ORDER BY id DESC LIMIT 5",nativeQuery = true)
     List<Student> findLastFiveStudents();
 }
