@@ -2,8 +2,7 @@ package pro.sky.java.cource4.ru.hogwarts.school1.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,6 +16,7 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Objects;
 
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
@@ -60,8 +60,9 @@ public class AvatarService {
     public Avatar findAvatar(long studentId) {
         return avatarRepository.findByStudentId(studentId).orElse(new Avatar());
     }
-    public Page<Avatar> findAll(Pageable pageable) {
-        return avatarRepository.findAll(pageable);
+    public List<Avatar> getAllAvatars(Integer number, Integer size) {
+        PageRequest pageRequest = PageRequest.of(number - 1, size);
+        return avatarRepository.findAll(pageRequest).getContent();
     }
     private byte[] generateImagePreview(Path filePath) throws IOException {
         try (InputStream is = Files.newInputStream(filePath);

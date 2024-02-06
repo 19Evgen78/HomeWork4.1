@@ -19,6 +19,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
+
 @RestController
 @RequestMapping(path = "/avatar")
 public class AvatarController {
@@ -74,8 +76,10 @@ public class AvatarController {
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.badRequest().build();}
-    @GetMapping("/avatars")
-    public Page<Avatar> getAllAvatars(@PageableDefault(size = 10, sort = "id") Pageable pageable) {
-        return avatarService.findAll(pageable);
+    @GetMapping
+    public ResponseEntity<List<Avatar>> getAllAvatars(@RequestParam("page") Integer pageNumber,
+                                                      @RequestParam("size") Integer pageSize){
+        List<Avatar> avatars = avatarService.getAllAvatars(pageNumber, pageSize);
+        return ResponseEntity.ok(avatars);
     }
 }
