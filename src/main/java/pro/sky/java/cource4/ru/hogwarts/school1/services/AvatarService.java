@@ -1,5 +1,7 @@
 package pro.sky.java.cource4.ru.hogwarts.school1.services;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
@@ -27,12 +29,14 @@ public class AvatarService {
     private String avatarDir;
     private final StudentService studentService;
     private final AvatarRepository avatarRepository;
+    private static final Logger logger = LoggerFactory.getLogger(AvatarService.class);
     @Autowired
     public AvatarService(AvatarRepository avatarRepository, StudentService studentService) {
         this.avatarRepository = avatarRepository;
         this.studentService = studentService;
     }
     public void uploadAvatar(Long studentId, MultipartFile file) throws IOException {
+        logger.info("Upload avatar for student with ID {}", studentId);
         Student student = studentService.findStudent(studentId);
         Path filePath = Path.of(avatarDir, student.getName() + "." + getExtension(Objects.requireNonNull(file.getOriginalFilename())));
         Files.createDirectories(filePath.getParent());
@@ -55,16 +59,20 @@ public class AvatarService {
         avatarRepository.save(avatar);
     }
     public void deleteAvatar(long studentId) {
+        logger.info("Delete avatar for student with ID {}", studentId);
         avatarRepository.deleteByStudentId(studentId);
     }
     public Avatar findAvatar(long studentId) {
+        logger.info("Find avatar for student with ID {}", studentId);
         return avatarRepository.findByStudentId(studentId).orElse(new Avatar());
     }
     public List<Avatar> getAllAvatars(Integer number, Integer size) {
+        logger.info("Get all avatars. Page number: {}, Page size: {}", number, size);
         PageRequest pageRequest = PageRequest.of(number - 1, size);
         return avatarRepository.findAll(pageRequest).getContent();
     }
     private byte[] generateImagePreview(Path filePath) throws IOException {
+        logger.info("Generating image preview for file: {}", filePath);
         try (InputStream is = Files.newInputStream(filePath);
              BufferedInputStream bis = new BufferedInputStream(is, 1024);
              ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
@@ -80,6 +88,7 @@ public class AvatarService {
         }
     }
     private String getExtension(String filename) {
+        logger.debug("Get extension.Filename:{}",filename);
         return filename.substring(filename.lastIndexOf(".") + 1);
     }
 }
