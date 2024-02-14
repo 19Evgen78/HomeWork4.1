@@ -115,4 +115,17 @@ public class StudentService {
         logger.debug("All students: " + allStudents.toString());
         return allStudents;
     }
+    public List<String> findStudentsNameWithA() {
+        return studentRepository.findAll().stream()
+                .filter(s -> s.getName().startsWith("A"))
+                .map(s -> s.getName().toUpperCase())
+                .sorted()
+                .collect(Collectors.toList());
+    }
+    public double findStudentAverageAge() {
+        return studentRepository.findAll().stream()
+                .mapToInt(Student::getAge)
+                .average()
+                .orElse(0);
+    }
 }

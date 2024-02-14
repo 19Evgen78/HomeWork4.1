@@ -10,7 +10,10 @@ import pro.sky.java.cource4.ru.hogwarts.school1.repositories.FacultyRepository;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 @Service
 public class FacultyService {
     private final FacultyRepository facultyRepository;
@@ -75,5 +78,15 @@ public class FacultyService {
                 .stream()
                 .filter(faculty -> faculty.getColor().equals(color))
                 .collect(Collectors.toList());
+    }
+
+    public String findLongestFacultyName() {
+        return facultyRepository.findAll().stream()
+                .map(Faculty::getName)
+                .max(Comparator.comparingInt(String::length))
+                .orElse("");
+    }
+    public int calculateSum() {
+        return IntStream.rangeClosed(1, 1_000_000).sum();
     }
 }

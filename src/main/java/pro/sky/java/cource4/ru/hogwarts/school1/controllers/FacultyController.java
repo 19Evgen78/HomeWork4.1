@@ -75,4 +75,14 @@ public class FacultyController {
     public Collection<Faculty> colorFilteredFaculties(@PathVariable String color) {
         return facultyService.filterColor(color);
     }
+    @GetMapping ("/faculties/long-name")
+    public ResponseEntity findLongestFacultyName () {
+        String longName = facultyService.findLongestFacultyName();
+        return ResponseEntity.ok(longName);
+    }
+    @GetMapping("/calculate-sum")
+    public ResponseEntity sum() {
+        int sum = facultyService.calculateSum();
+        return ResponseEntity.ok(sum);
+    }
 }
