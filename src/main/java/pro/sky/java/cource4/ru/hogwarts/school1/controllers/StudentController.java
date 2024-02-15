@@ -95,5 +95,68 @@ public class StudentController {
     public ResponseEntity findStudentAverageAge () {
         Double age = studentService.findStudentAverageAge();
         return ResponseEntity.ok(age);
+    }@GetMapping("/print-parallel")
+    public void printStudentsInParallel() {
+        System.out.println("Printing students in parallel...");
+
+        Thread t1 = new Thread(() -> {
+            studentService.printStudentName(0);
+            studentService.printStudentName(1);
+        });
+
+        Thread t2 = new Thread(() -> {
+            studentService.printStudentName(2);
+            studentService.printStudentName(3);
+        });
+
+        Thread t3 = new Thread(() -> {
+            studentService.printStudentName(4);
+            studentService.printStudentName(5);
+        });
+
+        t1.start();
+        t2.start();
+        t3.start();
+
+        try {
+            t1.join();
+            t2.join();
+            t3.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("Printing students in parallel finished.");
     }
+
+    @GetMapping("/print-synchronized")
+    public void printStudentsSynchronized() {
+        System.out.println("Printing students synchronized...");
+
+        studentService.printStudentNameSync(0);
+        studentService.printStudentNameSync(1);
+
+        Thread t1 = new Thread(() -> {
+            studentService.printStudentNameSync(2);
+            studentService.printStudentNameSync(3);
+        });
+
+        Thread t2 = new Thread(() -> {
+            studentService.printStudentNameSync(4);
+            studentService.printStudentNameSync(5);
+        });
+
+        t1.start();
+        t2.start();
+
+        try {
+            t1.join();
+            t2.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("Printing students synchronized finished.");
+    }
+
 }

@@ -8,6 +8,7 @@ import pro.sky.java.cource4.ru.hogwarts.school1.model.Faculty;
 import pro.sky.java.cource4.ru.hogwarts.school1.model.Student;
 import pro.sky.java.cource4.ru.hogwarts.school1.repositories.StudentRepository;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -127,5 +128,15 @@ public class StudentService {
                 .mapToInt(Student::getAge)
                 .average()
                 .orElse(0);
+    }
+    private final List<String> studentNames = Arrays.asList("Alice", "Bob", "Charlie", "David", "Emma", "Frank");
+    public void printStudentName(int index) {
+        String name = studentNames.get(index);
+        System.out.println("Printed: " + name + " in thread " + Thread.currentThread().getName());
+    }
+
+    public synchronized void printStudentNameSync(int index) {
+        String name = studentNames.get(index);
+        System.out.println("Printed: " + name + " in synchronized thread " + Thread.currentThread().getName());
     }
 }
